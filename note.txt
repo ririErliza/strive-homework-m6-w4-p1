@@ -1,0 +1,130 @@
+what error is this?
+
+ReferenceError: mongoose is not defined
+    at notFoundHandler (file:///C:/Users/erliz/OneDrive/Desktop/Homework/Back-end/strive-homework-m6-w4-p1/src/errorsHandlers.js:31:44)
+    at Layer.handle_error (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\layer.js:71:5)
+    at trim_prefix (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\index.js:326:13)
+    at C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\index.js:286:9
+    at Function.process_params (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\index.js:280:10)
+    at forbiddenHandler (file:///C:/Users/erliz/OneDrive/Desktop/Homework/Back-end/strive-homework-m6-w4-p1/src/errorsHandlers.js:26:5)
+    at Layer.handle_error (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\layer.js:71:5)
+    at trim_prefix (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\index.js:326:13)
+    at C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\index.js:286:9
+Incoming request --> GET -- Wed May 25 2022 10:48:32 GMT+0200 (Central European Summer Time)
+
+problem found: at errorHandler, mongoose was not imported
+--------------------------------------------------------------------------------------------------
+
+express-session deprecated undefined resave option; provide resave option file:\C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\src\server.js:31:12
+express-session deprecated undefined saveUninitialized option; provide saveUninitialized option file:\C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\src\server.js:31:12
+
+before : server.use(expressSession({ secret: "secretSomethingSomething" }))
+
+after: server.use(expressSession({ secret: "secretSomethingSomething", resave: true,
+saveUninitialized: true })) //solved
+
+--------------------------------------------------------------------------------------------------
+
+what error is this?
+
+error that happened after accessing localhost:3002/authors/googleLogin on browser
+
+C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\bcrypt\bcrypt.js:137
+        error = new Error('data and salt arguments required');
+                ^
+
+Error: data and salt arguments required
+    at Object.hash (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\bcrypt\bcrypt.js:137:17)
+    at C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\bcrypt\promises.js:29:12
+    at new Promise (<anonymous>)
+    at Object.module.exports.promise (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\bcrypt\promises.js:20:12)
+    at Object.hash (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\bcrypt\bcrypt.js:133:25)
+    at model.<anonymous> (file:///C:/Users/erliz/OneDrive/Desktop/Homework/Back-end/strive-homework-m6-w4-p1/src/services/authors/model.js:36:29)
+    at callMiddlewareFunction (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\kareem\index.js:471:27)
+    at model.next (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\kareem\index.js:58:7)
+    at _next (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\kareem\index.js:107:10)
+    at C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\kareem\index.js:496:30
+[nodemon] app crashed - waiting for file changes before starting...
+
+before:
+(in model)
+authorsSchema.pre("save", async function(next){
+  const newAuthor = this
+
+  const plainPass = newAuthor.password
+
+  const hash = await bcrypt.hash(plainPass, 9)
+
+  newAuthor.password = hash
+
+  next()
+})
+
+after: 
+authorsSchema.pre("save", async function(next){
+  const newAuthor = this
+
+  const plainPass = newAuthor.password
+  
+if(newAuthor.isModified("password")){
+  const hash = await bcrypt.hash(plainPass, 9)
+
+  newAuthor.password = hash
+
+}
+  next()
+})
+
+need to add if condition, we will just hash password for newAuthor if password is already modified
+
+-------------------------------------------------------------------------------------------
+
+what error happened?
+during testing
+cannot get redirect to the URL that given, always showing generic error 500
+
+error message like this:
+TypeError: Cannot read properties of undefined (reading 'token')
+    at file:///C:/Users/erliz/OneDrive/Desktop/Homework/Back-end/strive-homework-m6-w4-p1/src/services/authors/index.js:157:74
+    at Layer.handle [as handle_request] (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\express\lib\router\route.js:144:13)
+    at complete (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\passport\lib\middleware\authenticate.js:271:13)
+    at C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\passport\lib\middleware\authenticate.js:278:15
+    at pass (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\passport\lib\authenticator.js:428:14)
+    at Authenticator.transformAuthInfo (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\passport\lib\authenticator.js:450:5)
+    at C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\passport\lib\middleware\authenticate.js:275:22
+    at C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\passport\lib\http\request.js:41:7
+    at Immediate._onImmediate (C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\node_modules\passport\lib\sessionmanager.js:51:9)
+
+
+
+
+before:
+authorsRouter.get("/googleRedirect", passport.authenticate("google"), async (req, res, next) => {
+  // this URL needs to match EXACTLY the one configured on google.com
+  try {
+      console.log(req, "req")
+      
+    res.redirect(`${process.env.FE_URL}/authors?accessToken=${req.author.token}`) //here the problem
+
+  } catch (error) {
+    next(error)
+  }
+})
+
+after:
+authorsRouter.get("/googleRedirect", passport.authenticate("google"), async (req, res, next) => {
+  // this URL needs to match EXACTLY the one configured on google.com
+  try {
+      console.log(req, "req")
+      
+    res.redirect(`${process.env.FE_URL}/authors?accessToken=${req.user.token}`) //solved. we are accessing google user, not author
+
+
+  } catch (error) {
+    next(error)
+  }
+})
+
+-------------------------------------------------------------------------------------------

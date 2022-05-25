@@ -8,6 +8,7 @@ import express from "express";
 import authorsModel from "./model.js";
 import createError from "http-errors";
 import q2m from "query-to-mongo";
+import passport from "passport";
 import { cloudinaryUploader } from "../../lib/cloudinary.js";
 import {generateJWTToken} from "../../lib/auth/tools.js";
 import { JWTAuthMiddleware } from "../../lib/auth/token.js";
@@ -136,6 +137,28 @@ authorsRouter.delete("me",JWTAuthMiddleware, async (req,res)=>{
     
 })
 
+//---------------------- Google OAuth ----------------------------------
+
+authorsRouter.get("/googleLogin", passport.authenticate("google",{ scope: ["profile", "email"] }))
+
+// authorsRouter.get("/googleRedirect", passport.authenticate("google"), async (req, res, next) => {
+// try {
+//     res.send({accessToken:req.author.token})
+// } catch (error) {
+//     next(error)
+// }
+// })
+
+authorsRouter.get("/googleRedirect", passport.authenticate("google"), async (req, res, next) => {
+  // this URL needs to match EXACTLY the one configured on google.com
+  try {
+      //console.log(req, "req")
+      
+    res.redirect(`${process.env.FE_URL}/dashboard?accessToken=${req.user.token}`)
+  } catch (error) {
+    next(error)
+  }
+})
 //---------------------- --------------- ----------------------------------
 
 //3.

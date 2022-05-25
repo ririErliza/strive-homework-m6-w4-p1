@@ -1,4 +1,5 @@
 import multer from "multer"
+import mongoose from "mongoose"
 
 export const badRequestHandler = (err, req, res, next) => {
   if (err.status === 400 || err instanceof multer.MulterError) {
@@ -38,5 +39,5 @@ export const notFoundHandler = (err, req, res, next) => {
 
 export const genericErrorHandler = (err, req, res, next) => {
   console.log(err)
-  res.status(500).send({ error: "Generic error" })
+  res.status(500).send({ error: "Generic error --> an error on our side" })
 }

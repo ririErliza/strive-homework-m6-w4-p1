@@ -13,10 +13,11 @@ const authorsSchema = new Schema(
     name: { type: String, required: true },
     surname: { type: String, required: true },
     email: { type: String, required: true },
-    dateOfBirth: { type: String, required: true },
+    dateOfBirth: { type: String, required: false },
     avatar: {type: String, required: false},
-    password: { type: String, required: true },
+    password: { type: String, required: false},
     role: {type: String, required: true, default:"User", enum:["User", "Admin"]},
+    googleId: { type: String, required: false },
   },
   {
     timestamps: true, // automatically add createdAt and updatedAt fields
@@ -31,10 +32,13 @@ authorsSchema.pre("save", async function(next){
   const newAuthor = this
 
   const plainPass = newAuthor.password
-
+  
+if(newAuthor.isModified("password")){
   const hash = await bcrypt.hash(plainPass, 9)
 
   newAuthor.password = hash
+}
+  
 
   next()
 })
