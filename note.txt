@@ -15,6 +15,7 @@ Incoming request --> GET -- Wed May 25 2022 10:48:32 GMT+0200 (Central European 
 
 problem found: at errorHandler, mongoose was not imported
 --------------------------------------------------------------------------------------------------
+what error is this?
 
 express-session deprecated undefined resave option; provide resave option file:\C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\src\server.js:31:12
 express-session deprecated undefined saveUninitialized option; provide saveUninitialized option file:\C:\Users\erliz\OneDrive\Desktop\Homework\Back-end\strive-homework-m6-w4-p1\src\server.js:31:12
@@ -119,7 +120,7 @@ authorsRouter.get("/googleRedirect", passport.authenticate("google"), async (req
   try {
       console.log(req, "req")
       
-    res.redirect(`${process.env.FE_URL}/authors?accessToken=${req.user.token}`) //solved. we are accessing google user, not author
+    res.redirect(`${process.env.FE_URL}/authors?accessToken=${req.user.token}`) //solved. change the author to user, we are accessing google user, not author
 
 
   } catch (error) {
